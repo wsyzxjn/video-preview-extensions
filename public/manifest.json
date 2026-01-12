@@ -1,0 +1,48 @@
+{
+  "manifest_version": 3,
+  "name": "Video Preview Generator",
+  "version": "1.0.0",
+  "description": "使用 FFmpeg WASM 生成视频九宫格预览",
+  "permissions": ["activeTab", "scripting", "tabs", "webRequest"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "assets/background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_title": "Open Video Preview",
+    "default_icon": {
+      "16": "logo.png",
+      "48": "logo.png",
+      "128": "logo.png"
+    }
+  },
+  "icons": {
+    "16": "logo.png",
+    "48": "logo.png",
+    "128": "logo.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "exclude_matches": ["*://*.youtube.com/*", "*://*.www.youtube.com/*"],
+      "js": ["assets/content.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["assets/*", "index.html"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "cross_origin_embedder_policy": {
+    "value": "require-corp"
+  },
+  "cross_origin_opener_policy": {
+    "value": "same-origin"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'; worker-src 'self'"
+  }
+}
