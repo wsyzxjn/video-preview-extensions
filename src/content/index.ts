@@ -112,11 +112,22 @@ function attachButton(video: HTMLVideoElement) {
       parent.style.position = "relative";
     }
     parent.appendChild(container);
+
+    // Fullscreen behavior: Hide button when fullscreen
+    const handleFullscreenChange = () => {
+      if (document.fullscreenElement) {
+        container.style.display = "none";
+      } else {
+        container.style.display = "block";
+      }
+    };
+
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
   }
 }
 
 function handlePreview(video: HTMLVideoElement) {
-  let src = video.currentSrc || video.src;
+  const src = video.currentSrc || video.src;
   if (!src) return;
 
   chrome.runtime.sendMessage({ type: "OPEN_PREVIEW", url: src });
